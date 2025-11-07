@@ -14,11 +14,7 @@ export class RegisterClientController {
   @Post()
   @ApiOperation({ summary: 'Register client' })
   async execute(@Body() body: RegisterClientRequestDto): Promise<RegisterClientResponseDto> {
-
     const command = new RegisterClientCommand(body.email,);
-
-    const response = await this.commandBus.execute(command);
-    
-    return response;
+    return await this.commandBus.execute(command);
   }
 }

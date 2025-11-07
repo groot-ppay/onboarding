@@ -21,8 +21,8 @@ export class ClientRepository implements IClientRepository {
     );
   }
 
-  async get(clientId: string): Promise<ClientEntity | null> {
-    const doc = await this.model.findOne({ client_id: clientId });
+  async findById(clientId: string): Promise<ClientEntity | null> {
+    const doc = await this.model.findOne({ id: clientId });
     return doc ? ClientMapper.toDomain(doc) : null;
   }
 }

@@ -62,6 +62,12 @@ import { ClientRepository } from './persistence/repositories/client.repository';
       useClass: ClientRepository,
     },
   ],
-  exports: [ConfigModule, MongooseModule, CLIENT_REPOSITORY],
+  exports: [
+    ConfigModule, 
+    MongooseModule, 
+    CLIENT_REPOSITORY,
+    NUMBER_VERIFICATION_SERVICE,
+    SIM_SWAP_SERVICE,
+  ],
 })
 export class InfrastructureModule { }

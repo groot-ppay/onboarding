@@ -9,20 +9,20 @@ export type ClientEntityProps = {
   birthDate?: string;
   phoneNumber?: string;
   legal?: boolean;
-  status: 'CREATED' | 'KYC' | 'COMPLETED';
+  status: 'CREATED' | 'COMPLETED';
 };
 
 export class ClientEntity {
   constructor(
     public readonly id: Uuid,
-    public readonly email: string,
-    public readonly status: 'CREATED' | 'KYC' | 'COMPLETED',
-    public readonly documentNumber?: string,
-    public readonly gender?: string,
-    public readonly names?: string,
-    public readonly birthDate?: string,
-    public readonly phoneNumber?: string,
-    public readonly legal?: boolean
+    public email: string,
+    public status: 'CREATED' | 'COMPLETED',
+    public documentNumber?: string,
+    public gender?: string,
+    public names?: string,
+    public birthDate?: string,
+    public phoneNumber?: string,
+    public legal?: boolean
   ) {}
 
   toPrimitives(): ClientEntityProps {
