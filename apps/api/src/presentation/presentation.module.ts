@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ApplicationModule } from '../application/application.module';
-import { AppController } from './app.controller';
+import { CqrsModule } from '@nestjs/cqrs';
+import { RegisterClientController } from './controllers/register-client/register-client.controller';
 
 @Module({
-  imports: [ApplicationModule],
-  controllers: [AppController],
+  imports: [CqrsModule],
+  controllers: [
+    RegisterClientController,
+  ],
   providers: [],
 })
 export class PresentationModule {}

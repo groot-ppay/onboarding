@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
+import { CqrsModule } from '@nestjs/cqrs';
+
+import { RegisterClientHandler } from './use-cases/register-client/register-client.handler';
 
 @Module({
-  imports: [],
+  imports: [CqrsModule],
   providers: [
-    AppService,
-  ],
-  exports: [
-    AppService,
+    RegisterClientHandler,
   ],
 })
 export class ApplicationModule {}

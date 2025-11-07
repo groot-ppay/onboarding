@@ -3,9 +3,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { envConfig } from './config/env.config';
 import { 
+  CLIENT_REPOSITORY,
   NUMBER_VERIFICATION_SERVICE, 
   SIM_SWAP_SERVICE 
-} from './config/tokens';
+} from '../domain/config/tokens';
 import {
   Client,
   ClientSchema,
@@ -19,6 +20,7 @@ import {
 import { NumberVerificationService } from './external/services/number-verification.service';
 import { TokenService } from './external/services/token.service';
 import { SimSwapService } from './external/services/sim-swap.service';
+import { ClientRepository } from './persistence/repositories/client.repository';
 
 @Global()
 @Module({
@@ -44,6 +46,7 @@ import { SimSwapService } from './external/services/sim-swap.service';
     ]),
   ],
   providers: [
+    // Services
     {
       provide: NUMBER_VERIFICATION_SERVICE,
       useClass: NumberVerificationService,
@@ -53,7 +56,12 @@ import { SimSwapService } from './external/services/sim-swap.service';
       useClass: SimSwapService,
     },
     TokenService,
+    // Repositories
+    {
+      provide: CLIENT_REPOSITORY,
+      useClass: ClientRepository,
+    },
   ],
-  exports: [ConfigModule, MongooseModule],
+  exports: [ConfigModule, MongooseModule, CLIENT_REPOSITORY],
 })
 export class InfrastructureModule { }
