@@ -13,7 +13,7 @@ export class ValidateSimSwapHandler implements IEventHandler<ValidatePhoneEvent>
 	private readonly logger = new Logger(ValidateSimSwapHandler.name);
 
 	constructor(
-		@Inject(SIM_SWAP_SERVICE) private readonly numberVerificationService: ISimSwapService,
+		@Inject(SIM_SWAP_SERVICE) private readonly simSwapService: ISimSwapService,
     @Inject(CLIENT_REPOSITORY) private readonly repository: IClientRepository
 	) { }
 
@@ -22,7 +22,7 @@ export class ValidateSimSwapHandler implements IEventHandler<ValidatePhoneEvent>
 		this.logger.log(`Validando sim-swap para clientId: ${clientId}, teléfono: ${phoneNumber}`);
 
     try {
-      const response = await this.numberVerificationService.checkSimSwap({ phoneNumber });
+      const response = await this.simSwapService.checkSimSwap({ phoneNumber });
 
       if (!response.swapped) {
         this.logger.log(`El número ${phoneNumber} del cliente ${clientId} no ha sido intercambiado en 10 días`);
