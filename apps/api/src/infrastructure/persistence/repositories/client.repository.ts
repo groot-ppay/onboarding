@@ -14,8 +14,9 @@ export class ClientRepository implements IClientRepository {
 
   async save(entity: ClientEntity): Promise<void> {
     const data = ClientMapper.toPersistence(entity);
+    
     await this.model.updateOne(
-      { id: entity.id.value },
+      { id: data.id },
       { $set: data },
       { upsert: true }
     );

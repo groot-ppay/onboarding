@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject, Logger } from '@nestjs/common';
 import { ValidatePhoneCommand } from './validate-phone.command';
-import { ValidatePhoneResponseDto } from './validate-phone-response.dto';
+import { ValidatePhoneResponseDto } from '../../dtos/validate-phone-response.dto';
 import { INumberVerificationService } from '../../../domain/services/number-verification.service.interface';
 import { CLIENT_REPOSITORY, NUMBER_VERIFICATION_SERVICE } from '../../../domain/config/tokens';
 import { IClientRepository } from '../../../domain/repositories/client.repository';
@@ -45,6 +45,7 @@ export class ValidatePhoneHandler implements ICommandHandler<ValidatePhoneComman
       this.logger.error(error);
     }
 
+    // TODO: Save OTP code
     this.logger.log(`Enviando código por SMS para clientId: ${clientId}, teléfono: ${phoneNumber}`);
     return { strategy: 'OTP', state: 'PENDING', code: Math.floor(10000 + Math.random() * 90000) };
   }

@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { PhoneValidationRequestDto } from './phone-validation-request.dto';
 import { ValidatePhoneCommand } from '../../../application/use-cases/validate-phone/validate-phone.command';
-import { ValidatePhoneResponseDto } from '../../../application/use-cases/validate-phone/validate-phone-response.dto';
+import { ValidatePhoneResponseDto } from '../../../application/dtos/validate-phone-response.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller({ path: 'phone-validation', version: '1'})
