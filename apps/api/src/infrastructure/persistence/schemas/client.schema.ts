@@ -4,28 +4,28 @@ import { Document } from 'mongoose';
 @Schema({ collection: 'client', timestamps: true })
 export class Client extends Document {
   @Prop({ required: true, unique: true })
-  client_id!: string;
+  declare id: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   email!: string;
 
-  @Prop({ required: true })
-  document_number!: string;
+  @Prop()
+  document_number?: string;
 
-  @Prop({ required: true })
-  gender!: string;
+  @Prop()
+  gender?: string;
 
-  @Prop({ required: true })
-  names!: string;
+  @Prop()
+  names?: string;
 
-  @Prop({ required: true })
-  birth_date!: Date;
+  @Prop()
+  birth_date?: Date;
 
-  @Prop({ required: true })
-  phone_number!: string;
+  @Prop()
+  phone_number?: string;
 
-  @Prop({ required: true })
-  legal!: boolean;
+  @Prop()
+  legal?: boolean;
 
   @Prop({ required: true })
   status!: string;
