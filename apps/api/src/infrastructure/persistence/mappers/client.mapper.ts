@@ -7,7 +7,7 @@ export class ClientMapper {
     return new ClientEntity(
       new Uuid(model.id),
       model.email,
-      model.status as 'CREATED' | 'COMPLETED',
+      model.status as 'CREATED' | 'COMPLETED' | 'BLOCKED',
       model.document_number,
       model.gender,
       model.names,

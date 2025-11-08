@@ -22,19 +22,12 @@ export class SimSwapService implements ISimSwapService {
     this.scope = this.configService.get<string>('SIM_SWAP_SCOPE', '');
   }
 
-  async retrieveDate(
-    request: RetrieveDateRequest,
-    correlator?: string
-  ): Promise<RetrieveDateResponse> {
+  async retrieveDate( request: RetrieveDateRequest): Promise<RetrieveDateResponse> {
     const token = await this.tokenService.getAccessToken(this.scope);
     const headers: Record<string, string> = {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
     };
-
-    if (correlator) {
-      headers['x-correlator'] = correlator;
-    }
 
     const response = await fetch(`${this.apiUrl}/sim-swap/v0/retrieve-date`, {
       method: 'POST',
@@ -53,19 +46,12 @@ export class SimSwapService implements ISimSwapService {
     return response.json();
   }
 
-  async checkSimSwap(
-    request: CheckSimSwapRequest,
-    correlator?: string
-  ): Promise<CheckSimSwapResponse> {
+  async checkSimSwap(request: CheckSimSwapRequest): Promise<CheckSimSwapResponse> {
     const token = await this.tokenService.getAccessToken(this.scope);
     const headers: Record<string, string> = {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
     };
-
-    if (correlator) {
-      headers['x-correlator'] = correlator;
-    }
 
     const response = await fetch(`${this.apiUrl}/sim-swap/v0/check`, {
       method: 'POST',
