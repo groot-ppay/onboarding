@@ -19,13 +19,13 @@ export class ValidatePhoneHandler implements ICommandHandler<ValidatePhoneComman
   async execute(command: ValidatePhoneCommand): Promise<ValidatePhoneResponseDto> {
     const { clientId, phoneNumber } = command;
 
+    const client = await this.repository.findById(clientId);
+
+    if (!client) {
+      throw new Error('Cliente no encontrado');
+    }
+
     try {
-      const client = await this.repository.findById(clientId);
-
-      if (!client) {
-        throw new Error('Client not found');
-      }
-
       const result = await this.numberVerificationService.verifyPhoneNumber({ phoneNumber });
 
       if (result.devicePhoneNumberVerified) {
@@ -38,13 +38,14 @@ export class ValidatePhoneHandler implements ICommandHandler<ValidatePhoneComman
         return { strategy: 'SILENT_VALIDATION', state: 'VALIDATED' };
       }
       else {
-        this.logger.log(`Enviando código por SMS para clientId: ${clientId}, teléfono: ${phoneNumber}`);
-        return { strategy: 'OTP', state: 'PENDING', code: Math.floor(10000 + Math.random() * 90000) };
+        this.logger.warn(`No se pudo validar silenciosamente el teléfono para clientId: ${clientId}, teléfono: ${phoneNumber}`);
       }
     } 
     catch (error) {
       this.logger.error(error);
-      throw error;
     }
+
+    this.logger.log(`Enviando código por SMS para clientId: ${clientId}, teléfono: ${phoneNumber}`);
+    return { strategy: 'OTP', state: 'PENDING', code: Math.floor(10000 + Math.random() * 90000) };
   }
 }
