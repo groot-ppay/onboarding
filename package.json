@@ -1,6 +1,6 @@
 {
   "name": "my-workspace",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "scripts": {
     "build": "nx build",
@@ -23,6 +23,8 @@
     "@nx/workspace": "^18.0.0",
     "@types/jest": "^29.5.0",
     "@types/node": "^22.0.0",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "@vitejs/plugin-react": "^4.2.0",
@@ -48,6 +50,8 @@
     "axios": "^1.13.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
+    "lottie-react": "^2.4.1",
+    "lucide-react": "^0.454.0",
     "mongoose": "^8.19.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
