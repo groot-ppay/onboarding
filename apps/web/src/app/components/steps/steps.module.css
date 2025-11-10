@@ -1,0 +1,225 @@
+/* Shared styles for all step components */
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--gray-900);
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  color: var(--gray-600);
+  margin-bottom: 2rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--gray-900);
+  margin-bottom: 0.5rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--gray-300);
+  font-size: 1rem;
+  outline: none;
+}
+
+.select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--gray-300);
+  font-size: 1rem;
+  outline: none;
+}
+
+.infoBox {
+  background-color: #dbeafe;
+  border: 1px solid #93c5fd;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.infoText {
+  font-size: 0.875rem;
+  color: #1e3a8a;
+}
+
+.grayBox {
+  background-color: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.grayText {
+  font-size: 0.75rem;
+  color: var(--gray-600);
+}
+
+/* OTP specific styles */
+.otpContainer {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.otpInput {
+  width: 3rem;
+  height: 3.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-radius: 0.5rem;
+  border: 2px solid var(--gray-300);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.otpInput:focus,
+.otpInputFilled {
+  border-color: var(--primary);
+}
+
+.resendBox {
+  background-color: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.resendText {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  margin-bottom: 0.5rem;
+}
+
+.resendButton {
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Success/Error screens */
+.centerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.iconCircle {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.successIcon {
+  background-color: var(--success);
+}
+
+.largeTitle {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: var(--gray-900);
+  margin-bottom: 0.5rem;
+}
+
+.centerText {
+  color: var(--gray-600);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.refText {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+/* Affidavit styles */
+.affidavitBox {
+  background-color: var(--gray-50);
+  border: 1px solid var(--gray-300);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.affidavitTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 1rem;
+}
+
+.affidavitContent {
+  font-size: 0.875rem;
+  color: var(--gray-700);
+  line-height: 1.6;
+}
+
+.affidavitList {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.affidavitList li {
+  margin-bottom: 0.5rem;
+}
+
+.affidavitWarning {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  color: #92400e;
+}
+
+.checkboxGroup {
+  margin-top: 1rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--gray-900);
+}
+
+.checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  cursor: pointer;
+}

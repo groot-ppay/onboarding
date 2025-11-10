@@ -55,3 +55,5 @@ Dockerfile
 Dockerfile.dev
 docker-compose.yaml
 yarn.lock
+
+.amazonq
