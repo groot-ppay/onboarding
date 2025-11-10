@@ -28,11 +28,13 @@ export class ValidateOtpHandler implements ICommandHandler<ValidateOtpCommand, V
     // TODO: Check OTP Code
     this.logger.log(`Teléfono validado para clientId: ${clientId}, teléfono: ${phoneNumber}`);
 
-    client.phoneNumber = phoneNumber;
-
-    await this.repository.save(client);
-
-    await this.publishEvent(clientId, phoneNumber);
+    if (!client.phoneNumber) {   
+      client.phoneNumber = phoneNumber;
+  
+      await this.repository.save(client);
+  
+      await this.publishEvent(clientId, phoneNumber);
+    }
 
     return { strategy: 'OTP', state: 'VALIDATED' };
   }
