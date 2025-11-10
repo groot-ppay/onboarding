@@ -11,7 +11,13 @@ import { ConfigService } from '@nestjs/config';
 @CommandHandler(LoginClientCommand)
 export class LoginClientHandler implements ICommandHandler<LoginClientCommand, LoginClientResponseDto> {
 
-  private readonly mockNumber: string;
+  private readonly mockNumbers: string[] = [
+    '+541122358032', // número par => cambió ahora
+    '+541122358033', // número impar => cambió hace 250h
+    '+541122358030', // último dígito 0 => número no encontrado
+    '+541122222222', // no tuvo cambio
+    '+541111111111', // no tuvo cambio
+  ];
 
   private readonly logger = new Logger(LoginClientHandler.name);
 
@@ -20,9 +26,7 @@ export class LoginClientHandler implements ICommandHandler<LoginClientCommand, L
     @Inject(NUMBER_VERIFICATION_SERVICE) private readonly numberVerificationService: INumberVerificationService,
     @Inject(DEVICE_SWAP_SERVICE) private readonly deviceSwapService: IDeviceSwapService,
     private readonly configService: ConfigService
-  ) {
-    this.mockNumber = this.configService.get<string>('DEVICE_NUMBER_VALIDATED') || '541122358032';
-  }
+  ) {}
 
   async execute(command: LoginClientCommand): Promise<LoginClientResponseDto> {
     const { email } = command;
@@ -47,8 +51,9 @@ export class LoginClientHandler implements ICommandHandler<LoginClientCommand, L
     }
 
     try {
-      const deviceSwapResult = await this.deviceSwapService.retrieveDate({ phoneNumber: this.mockNumber });
-      this.logger.log(`Fecha de cambio de dispositivo para cliente ${client.id.value}: ${deviceSwapResult.latestDeviceChange}`);
+      const mockNumber = this.mockNumbers[Math.floor(Math.random() * this.mockNumbers.length)];
+      const deviceSwapResult = await this.deviceSwapService.retrieveDate({ phoneNumber: mockNumber });
+      this.logger.log(`Fecha de cambio de dispositivo para cliente ${client.id.value} (mock: ${mockNumber}): ${deviceSwapResult.latestDeviceChange}`);
       console.log('Enviando info a Paygilant para evaluar el riesgo...');
     } 
     catch (error) {
