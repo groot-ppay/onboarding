@@ -1,6 +1,8 @@
 import EmailRegister from './steps/email-register';
 import DNICapture from './steps/dni-capture';
 import PhoneVerification from './steps/phone-verification';
+import OtpVerification from './steps/otp-verification';
+import Affidavit from './steps/affidavit';
 import HomeScreen from './steps/home-screen';
 import ErrorScreen from './steps/error-screen';
 import { ValidationSuccess } from './steps/validation-success';
@@ -10,15 +12,6 @@ import { FormLayout } from './form-layout';
 import { Container } from './ui/container';
 import { PageHeader } from './ui/page-header';
 import { useKYCFlow } from '../hooks/useKYCFlow';
-
-const STEPS = [
-  { id: 1, name: 'Email', description: 'Usuario informa mail' },
-  { id: 2, name: 'Validación', description: 'Verificación iniciada' },
-  { id: 3, name: 'DNI', description: 'Informa DNI y datos personales' },
-  { id: 4, name: 'Teléfono', description: 'Verificación de teléfono' },
-  { id: 5, name: 'Cuenta OK', description: 'Cuenta verificada' },
-  { id: 6, name: 'Home', description: 'Bienvenido' },
-];
 
 const KYCFlow = () => {
   const {
@@ -35,7 +28,7 @@ const KYCFlow = () => {
   } = useKYCFlow();
 
   if (showError) return <ErrorScreen onRetry={handleRetry} onClose={handleReset} />;
-  if (currentStep === 6) return <HomeScreen formData={formData} onReset={handleReset} />;
+  if (currentStep === 8) return <HomeScreen formData={formData} onReset={handleReset} />;
 
   const renderContent = () => {
     if (isLoading) {
@@ -51,18 +44,16 @@ const KYCFlow = () => {
       2: <ValidationSuccess />,
       3: (
         <DNICapture
-          name={formData.name}
           dni={formData.dni}
           gender={formData.gender}
-          dateOfBirth={formData.dateOfBirth}
-          onNameChange={(value) => updateFormData('name', value)}
           onDniChange={(value) => updateFormData('dni', value)}
           onGenderChange={(value) => updateFormData('gender', value)}
-          onDateOfBirthChange={(value) => updateFormData('dateOfBirth', value)}
         />
       ),
       4: <PhoneVerification phone={formData.phone} onPhoneChange={(value) => updateFormData('phone', value)} />,
-      5: <AccountCreated referenciaId={formData.referenciaId} />,
+      5: <OtpVerification phone={formData.phone} otp={formData.otp} onOtpChange={(value) => updateFormData('otp', value)} />,
+      6: <Affidavit accepted={formData.affidavitAccepted} onAcceptChange={(value) => updateFormData('affidavitAccepted', value)} />,
+      7: <AccountCreated referenciaId={formData.referenciaId} />,
     };
 
     return stepComponents[currentStep] || null;
@@ -74,13 +65,12 @@ const KYCFlow = () => {
         <PageHeader title="Crear Cuenta" subtitle="Completa tu verificación de identidad" />
 
         <FormLayout
-          steps={STEPS}
           currentStep={currentStep}
           onNext={handleNext}
           onPrevious={handlePrevious}
           canProceed={canProceed()}
           isLoading={isLoading}
-          nextLabel={currentStep === 5 ? 'Ir a Home' : 'Siguiente'}
+          nextLabel={currentStep === 7 ? 'Ir a Home' : 'Siguiente'}
         >
           {renderContent()}
         </FormLayout>

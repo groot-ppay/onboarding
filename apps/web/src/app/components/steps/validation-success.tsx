@@ -1,31 +1,12 @@
 import { Check } from 'lucide-react';
+import styles from './steps.module.css';
 
 export const ValidationSuccess = () => (
-  <div style={{
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: '24rem'
-  }}>
-    <div style={{
-      width: '5rem',
-      height: '5rem',
-      backgroundColor: 'var(--success)',
-      borderRadius: '50%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: '1.5rem',
-      boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
-    }}>
+  <div className={styles.centerContainer}>
+    <div className={`${styles.iconCircle} ${styles.successIcon}`}>
       <Check size={40} color="white" />
     </div>
-    <h2 style={{ fontSize: '1.875rem', fontWeight: 'bold', color: 'var(--gray-900)', marginBottom: '0.5rem', textAlign: 'center' }}>
-      Validación Exitosa
-    </h2>
-    <p style={{ color: 'var(--gray-600)', textAlign: 'center' }}>
-      Tu email ha sido verificado correctamente
-    </p>
+    <h2 className={styles.largeTitle}>Validación Exitosa</h2>
+    <p className={styles.centerText}>Tu email ha sido verificado correctamente</p>
   </div>
 );

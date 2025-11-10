@@ -5,10 +5,10 @@ export const useKYCFlow = () => {
   const [formData, setFormData] = useState({
     email: '',
     gender: '',
-    name: '',
     dni: '',
-    dateOfBirth: '',
     phone: '',
+    otp: '',
+    affidavitAccepted: false,
     referenciaId: 'KYC-2025-001122',
   });
   const [showError, setShowError] = useState(false);
@@ -18,7 +18,7 @@ export const useKYCFlow = () => {
     setIsLoading(true);
     
     setTimeout(() => {
-      if (currentStep < 6) {
+      if (currentStep < 8) {
         setCurrentStep(currentStep + 1);
         setShowError(false);
       }
@@ -40,27 +40,33 @@ export const useKYCFlow = () => {
     setFormData({
       email: '',
       gender: '',
-      name: '',
       dni: '',
-      dateOfBirth: '',
       phone: '',
+      otp: '',
+      affidavitAccepted: false,
       referenciaId: 'KYC-2025-001122',
     });
     setShowError(false);
+    globalThis.history.pushState({}, '', '/login');
+    globalThis.dispatchEvent(new PopStateEvent('popstate'));
   };
 
   const updateFormData = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const canProceed = () => {
+  const canProceed = (): boolean => {
     switch (currentStep) {
       case 1:
         return formData.email.includes('@');
       case 3:
-        return formData.name && formData.dni && formData.gender && formData.dateOfBirth;
+        return !!(formData.dni && formData.gender);
       case 4:
-        return formData.phone && formData.phone.length >= 10;
+        return formData.phone.length >= 10;
+      case 5:
+        return formData.otp.length === 6;
+      case 6:
+        return formData.affidavitAccepted;
       default:
         return true;
     }

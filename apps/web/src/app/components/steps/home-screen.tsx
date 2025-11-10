@@ -3,7 +3,6 @@ import { Home, LogOut, Settings } from 'lucide-react';
 export interface HomeScreenProps {
   formData: {
     email: string;
-    name: string;
     referenciaId: string;
   };
   onReset: () => void;
@@ -63,18 +62,6 @@ export default function HomeScreen({ formData, onReset }: HomeScreenProps) {
               }}>
                 <span style={{ color: 'var(--gray-600)' }}>Email</span>
                 <span style={{ fontWeight: 600, color: 'var(--gray-900)' }}>{formData.email}</span>
-              </div>
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingBottom: '1rem',
-                borderBottom: '1px solid var(--gray-200)'
-              }}>
-                <span style={{ color: 'var(--gray-600)' }}>Nombre</span>
-                <span style={{ fontWeight: 600, color: 'var(--gray-900)' }}>
-                  {formData.name || 'No registrado'}
-                </span>
               </div>
               <div style={{
                 display: 'flex',
