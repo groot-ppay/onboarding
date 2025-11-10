@@ -54,11 +54,11 @@ export class LoginClientHandler implements ICommandHandler<LoginClientCommand, L
       const mockNumber = this.mockNumbers[Math.floor(Math.random() * this.mockNumbers.length)];
       const deviceSwapResult = await this.deviceSwapService.retrieveDate({ phoneNumber: mockNumber });
       this.logger.log(`Fecha de cambio de dispositivo para cliente ${client.id.value} (mock: ${mockNumber}): ${deviceSwapResult.latestDeviceChange}`);
-      console.log('Enviando info a Paygilant para evaluar el riesgo...');
     } 
     catch (error) {
       this.logger.error(`Error al obtener fecha de cambio de dispositivo: ${error}`);
     }
+    console.log('Enviando info a Paygilant para evaluar el riesgo...');
 
     try {
       const result = await this.numberVerificationService.verifyPhoneNumber({ phoneNumber: client.phoneNumber });

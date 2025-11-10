@@ -35,10 +35,10 @@ export class ValidateDeviceSwapHandler implements IEventHandler<ValidatedPhoneEv
     try {
       const deviceSwapResult = await this.deviceSwapService.retrieveDate({ phoneNumber: mockNumber });
       this.logger.log(`Fecha de cambio de dispositivo para cliente ${clientId}: ${deviceSwapResult.latestDeviceChange}`);
-      console.log('Enviando info a Paygilant para evaluar el riesgo...');
     } 
     catch (error) {
       this.logger.error(error);
     }
+    console.log('Enviando info a Paygilant para evaluar el riesgo...');
 	}
 }
