@@ -20,7 +20,7 @@ export class ValidateDeviceSwapHandler implements IEventHandler<ValidatedPhoneEv
     @Inject(CLIENT_REPOSITORY) private readonly repository: IClientRepository,
     private readonly configService: ConfigService
 	) { 
-    this.mockNumber = this.configService.get<string>('DEVICE_NUMBER_VALIDATED') || '+222222222222';
+    this.mockNumber = this.configService.get<string>('DEVICE_NUMBER_VALIDATED') || '541122358032';
   }
 
 	async handle(event: ValidatedPhoneEvent): Promise<void> {
@@ -28,25 +28,12 @@ export class ValidateDeviceSwapHandler implements IEventHandler<ValidatedPhoneEv
 		this.logger.log(`Validando device-swap para clientId: ${clientId}, teléfono: ${this.mockNumber}`);
 
     try {
-      const response = await this.deviceSwapService.checkDeviceSwap({ phoneNumber: this.mockNumber });
-
-      if (!response.swapped) {
-        this.logger.log(`El dispositivo del cliente ${clientId} con número ${this.mockNumber} no ha sido intercambiado en 10 días`);
-        // Marcar el onb como seguro
-      }
+      const deviceSwapResult = await this.deviceSwapService.retrieveDate({ phoneNumber: this.mockNumber });
+      this.logger.log(`Fecha de cambio de dispositivo para cliente ${clientId}: ${deviceSwapResult.latestDeviceChange}`);
+      console.log('Enviando info a Paygilant para evaluar el riesgo...');
     } 
     catch (error) {
       this.logger.error(error);
     }
-
-    const client = await this.repository.findById(clientId);
-
-    this.logger.warn(`El cliente ${clientId} ha sido bloqueado por haber intercambiado el dispositivo en 10 días`);
-    this.logger.warn(`El cliente ${clientId} debe utilizar más factores de verificación. Ej: FaceRecognition`);
-
-    client!.status = 'BLOCKED';
-
-    await this.repository.save(client!);
-    // Marcar el onb como riesgoso y requerir más factores de verificación. Ej: FaceRecognition
 	}
 }

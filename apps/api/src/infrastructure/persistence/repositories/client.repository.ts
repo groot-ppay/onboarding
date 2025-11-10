@@ -26,4 +26,9 @@ export class ClientRepository implements IClientRepository {
     const doc = await this.model.findOne({ id: clientId });
     return doc ? ClientMapper.toDomain(doc) : null;
   }
+
+  async findByEmail(email: string): Promise<ClientEntity | null> {
+    const doc = await this.model.findOne({ email });
+    return doc ? ClientMapper.toDomain(doc) : null;
+  }
 }

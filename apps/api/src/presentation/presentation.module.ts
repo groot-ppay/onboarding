@@ -4,6 +4,7 @@ import { RegisterClientController } from './controllers/register-client/register
 import { PhoneValidationController } from './controllers/phone-validation/phone-validation.controller';
 import { OtpValidationController } from './controllers/otp-validation/otp-validation.controller';
 import { CompleteClientDataController } from './controllers/complete-client-data/complete-client-data.controller';
+import { LoginClientController } from './controllers/login-client/login-client.controller';
 
 @Module({
   imports: [CqrsModule],
@@ -12,6 +13,7 @@ import { CompleteClientDataController } from './controllers/complete-client-data
     PhoneValidationController,
     OtpValidationController,
     CompleteClientDataController,
+    LoginClientController,
   ],
   providers: [],
 })
