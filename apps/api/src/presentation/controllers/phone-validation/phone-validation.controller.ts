@@ -5,7 +5,7 @@ import { ValidatePhoneCommand } from '../../../application/use-cases/validate-ph
 import { ValidatePhoneResponseDto } from '../../../application/dtos/validate-phone-response.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
-@Controller({ path: 'phone-validation', version: '1'})
+@Controller({ path: 'client/phone-validation', version: '1'})
 @ApiTags('Client')
 export class PhoneValidationController {
   constructor(private readonly commandBus: CommandBus) {}

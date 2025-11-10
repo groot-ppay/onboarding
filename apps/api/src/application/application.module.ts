@@ -5,6 +5,7 @@ import { RegisterClientHandler } from './use-cases/register-client/register-clie
 import { ValidatePhoneHandler } from './use-cases/validate-phone/validate-phone.handler';
 import { ValidateOtpHandler } from './use-cases/validate-otp/validate-otp.handler';
 import { ValidateDeviceSwapHandler } from './use-cases/validate-device-swap/validate-device-swap.handler';
+import { CompleteClientDataHandler } from './use-cases/complete-client-data/complete-client-data.handler';
 
 @Module({
   imports: [CqrsModule],
@@ -12,6 +13,7 @@ import { ValidateDeviceSwapHandler } from './use-cases/validate-device-swap/vali
     RegisterClientHandler,
     ValidatePhoneHandler,
     ValidateOtpHandler,
+    CompleteClientDataHandler,
     // Events
     ValidateDeviceSwapHandler,
   ],

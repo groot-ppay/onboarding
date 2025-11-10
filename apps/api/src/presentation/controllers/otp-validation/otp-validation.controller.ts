@@ -5,7 +5,7 @@ import { ValidatePhoneResponseDto } from '../../../application/dtos/validate-pho
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ValidateOtpCommand } from '../../../application/use-cases/validate-otp/validate-otp.command';
 
-@Controller({ path: 'otp-validation', version: '1'})
+@Controller({ path: 'client/otp-validation', version: '1'})
 @ApiTags('Client')
 export class OtpValidationController {
   constructor(private readonly commandBus: CommandBus) {}
