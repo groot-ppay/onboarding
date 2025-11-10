@@ -14,12 +14,14 @@ export class ClientRepository implements IClientRepository {
 
   async save(entity: ClientEntity): Promise<void> {
     const data = ClientMapper.toPersistence(entity);
+    console.log("🚀 ~ ClientRepository ~ save ~ data:", data)
     
-    await this.model.updateOne(
+    const updateTest = await this.model.updateOne(
       { id: data.id },
       { $set: data },
       { upsert: true }
     );
+    console.log("🚀 ~ ClientRepository ~ save ~ updateTest:", updateTest)
   }
 
   async findById(clientId: string): Promise<ClientEntity | null> {

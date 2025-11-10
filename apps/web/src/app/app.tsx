@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Router, navigate } from './router';
 import Login from './components/login';
+import LoginOtp from './components/login-otp';
 import VerifyEmail from './components/verify-email';
 import Home from './components/home';
 import KYCFlow from './components/kyc-flow';
 import { Loader } from './components/loader';
+import { ClientProvider, useClient } from './context/ClientContext';
+import { LoginResponse } from './types/login.types';
 import './styles.css';
 
-export function App() {
+function AppContent() {
+  const { setClientData } = useClient();
   const [isLoading, setIsLoading] = useState(false);
   const [currentPath, setCurrentPath] = useState(globalThis.location.pathname);
   const [loginEmail, setLoginEmail] = useState('');
+  const [loginOtpCode, setLoginOtpCode] = useState('');
 
   useEffect(() => {
     const handlePopState = () => {
@@ -22,14 +27,23 @@ export function App() {
     return () => globalThis.removeEventListener('popstate', handlePopState);
   }, []);
 
-  const handleLogin = (email: string) => {
+  const handleLogin = (email: string, loginResponse: LoginResponse) => {
     setLoginEmail(email);
-    setIsLoading(true);
-    setTimeout(() => {
+    setClientData(loginResponse);
+    
+    if (loginResponse.state === 'VALIDATED' && loginResponse.strategy === 'SILENT_VALIDATION') {
       navigate('/verify-email');
       setCurrentPath('/verify-email');
-      setIsLoading(false);
-    }, 1500);
+    } else if (loginResponse.state === 'PENDING' && loginResponse.strategy === 'OTP') {
+      setLoginOtpCode(loginResponse.code.toString());
+      navigate('/login-otp');
+      setCurrentPath('/login-otp');
+    }
+  };
+
+  const handleLoginOtpSuccess = () => {
+    navigate('/verify-email');
+    setCurrentPath('/verify-email');
   };
 
   if (isLoading) {
@@ -50,6 +64,10 @@ export function App() {
     {
       path: '/login',
       component: <Login onLogin={handleLogin} />
+    },
+    {
+      path: '/login-otp',
+      component: <LoginOtp email={loginEmail} otpCode={loginOtpCode} onSuccess={handleLoginOtpSuccess} />
     },
     {
       path: '/verify-email',
@@ -77,6 +95,14 @@ export function App() {
   ];
 
   return <Router routes={routes} defaultPath="/login" />;
+}
+
+export function App() {
+  return (
+    <ClientProvider>
+      <AppContent />
+    </ClientProvider>
+  );
 }
 
 export default App;

@@ -1,29 +1,56 @@
 import { useState } from 'react';
+import { useClient } from '../context/ClientContext';
+import { PhoneValidationResponse } from '../types/phone-validation.types';
 
 export const useKYCFlow = () => {
+  const { clientData, setClientData, clearClientData } = useClient();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     email: '',
+    clientId: '',
     gender: '',
     dni: '',
     phone: '',
     otp: '',
+    otpCode: '',
     affidavitAccepted: false,
     referenciaId: 'KYC-2025-001122',
   });
   const [showError, setShowError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleNext = () => {
-    setIsLoading(true);
-    
-    setTimeout(() => {
-      if (currentStep < 8) {
+  const handleNext = async () => {
+    if (currentStep === 1) {
+      setIsLoading(true);
+      try {
+        const response = await fetch('http://localhost:3000/client', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: formData.email }),
+        });
+
+        if (!response.ok) {
+          setShowError(true);
+          setIsLoading(false);
+          return;
+        }
+
+        const data = await response.json();
+        console.log('Client registration response:', data);
+        setClientData(data);
+        setFormData((prev) => ({ ...prev, clientId: data.id }));
         setCurrentStep(currentStep + 1);
         setShowError(false);
+      } catch (error) {
+        console.error('Error registering client:', error);
+        setShowError(true);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    }, 2000);
+    } else if (currentStep < 8) {
+      setCurrentStep(currentStep + 1);
+      setShowError(false);
+    }
   };
 
   const handlePrevious = () => {
@@ -39,13 +66,16 @@ export const useKYCFlow = () => {
     setCurrentStep(1);
     setFormData({
       email: '',
+      clientId: '',
       gender: '',
       dni: '',
       phone: '',
       otp: '',
+      otpCode: '',
       affidavitAccepted: false,
       referenciaId: 'KYC-2025-001122',
     });
+    clearClientData();
     setShowError(false);
     globalThis.history.pushState({}, '', '/login');
     globalThis.dispatchEvent(new PopStateEvent('popstate'));
@@ -53,6 +83,15 @@ export const useKYCFlow = () => {
 
   const updateFormData = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handlePhoneValidation = (response: PhoneValidationResponse) => {
+    if (response.state === 'PENDING' && response.strategy === 'OTP') {
+      setFormData((prev) => ({ ...prev, otpCode: response.code.toString() }));
+      setCurrentStep(5);
+    } else if (response.state === 'VALIDATED' && response.strategy === 'SILENT_VALIDATION') {
+      setCurrentStep(6);
+    }
   };
 
   const canProceed = (): boolean => {
@@ -64,6 +103,7 @@ export const useKYCFlow = () => {
       case 4:
         return formData.phone.length >= 10;
       case 5:
+        console.log('Checking OTP canProceed:', formData.otp, 'length:', formData.otp.length);
         return formData.otp.length === 6;
       case 6:
         return formData.affidavitAccepted;
@@ -82,6 +122,7 @@ export const useKYCFlow = () => {
     handleRetry,
     handleReset,
     updateFormData,
+    handlePhoneValidation,
     canProceed,
   };
 };

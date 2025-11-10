@@ -1,22 +1,42 @@
 import { useState } from 'react';
 import { LogIn } from 'lucide-react';
+import { LoginResponse } from '../types/login.types';
 import styles from './login.module.css';
 
 interface LoginProps {
-  onLogin: (email: string) => void;
+  onLogin: (email: string, loginResponse: LoginResponse) => void;
 }
 
 export default function Login({ onLogin }: LoginProps) {
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      onLogin(email);
+    if (!email) return;
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('http://localhost:3000/client/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data: LoginResponse = await response.json();
+      console.log('Login response:', data);
+
+      if (response.ok) {
+        onLogin(email, data);
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const canSubmit = email.includes('@');
+  const canSubmit = email.includes('@') && !isLoading;
 
   return (
     <div className={styles.container}>
@@ -43,7 +63,7 @@ export default function Login({ onLogin }: LoginProps) {
             </div>
 
             <button type="submit" disabled={!canSubmit} className={styles.button}>
-              Iniciar Sesión
+              {isLoading ? 'Iniciando...' : 'Iniciar Sesión'}
             </button>
           </form>
 

@@ -24,6 +24,7 @@ const KYCFlow = () => {
     handleRetry,
     handleReset,
     updateFormData,
+    handlePhoneValidation,
     canProceed,
   } = useKYCFlow();
 
@@ -50,8 +51,15 @@ const KYCFlow = () => {
           onGenderChange={(value) => updateFormData('gender', value)}
         />
       ),
-      4: <PhoneVerification phone={formData.phone} onPhoneChange={(value) => updateFormData('phone', value)} />,
-      5: <OtpVerification phone={formData.phone} otp={formData.otp} onOtpChange={(value) => updateFormData('otp', value)} />,
+      4: (
+        <PhoneVerification 
+          phone={formData.phone} 
+          clientId={formData.clientId} 
+          onPhoneChange={(value) => updateFormData('phone', value)}
+          onValidationComplete={handlePhoneValidation}
+        />
+      ),
+      5: <OtpVerification phone={formData.phone} otp={formData.otp} otpCode={formData.otpCode} onOtpChange={(value) => updateFormData('otp', value)} />,
       6: <Affidavit accepted={formData.affidavitAccepted} onAcceptChange={(value) => updateFormData('affidavitAccepted', value)} />,
       7: <AccountCreated referenciaId={formData.referenciaId} />,
     };
