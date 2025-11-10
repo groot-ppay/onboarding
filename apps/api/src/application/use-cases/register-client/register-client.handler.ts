@@ -17,10 +17,8 @@ export class RegisterClientHandler implements ICommandHandler<RegisterClientComm
     const clientId = Uuid.create();
 
     const client = ClientEntity.create(clientId, command.email);
-    console.log("🚀 ~ RegisterClientHandler ~ execute ~ client:", client)
     
-    const test = await this.clientRepository.save(client);
-    console.log("🚀 ~ RegisterClientHandler ~ execute ~ test:", test)
+    await this.clientRepository.save(client);
     
     return { clientId: clientId.value };
   }
