@@ -1,5 +1,5 @@
 import { Body, Controller, Param, Put } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommandBus } from '@nestjs/cqrs';
 import { CompleteClientDataRequestDto } from './complete-client-data-request.dto';
 import { CompleteClientDataResponseDto } from '../../../application/use-cases/complete-client-data/complete-client-data-response.dto';
@@ -13,6 +13,7 @@ export class CompleteClientDataController {
 
   @Put(':id/complete-data')
   @ApiOperation({ summary: 'Complete client data' })
+  @ApiResponse({ status: 200, description: 'Client data completed successfully', type: CompleteClientDataResponseDto })
   async execute(
     @Param('id') clientId: string,
     @Body() body: CompleteClientDataRequestDto
