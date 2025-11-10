@@ -4,7 +4,7 @@ import { ValidateOtpCommand } from './validate-otp.command';
 import { CLIENT_REPOSITORY } from '../../../domain/config/tokens';
 import { IClientRepository } from '../../../domain/repositories/client.repository';
 import { ValidatePhoneResponseDto } from '../../dtos/validate-phone-response.dto';
-import { ValidatePhoneEvent } from '../../events/validate-phone.event';
+import { ValidatedPhoneEvent } from '../../events/validated-phone.event';
 
 @CommandHandler(ValidateOtpCommand)
 export class ValidateOtpHandler implements ICommandHandler<ValidateOtpCommand, ValidatePhoneResponseDto> {
@@ -38,7 +38,7 @@ export class ValidateOtpHandler implements ICommandHandler<ValidateOtpCommand, V
   }
 
   private async publishEvent(clientId: string, phoneNumber: string) {
-    const event = new ValidatePhoneEvent(clientId, phoneNumber);
+    const event = new ValidatedPhoneEvent(clientId, phoneNumber);
     this.eventBus.publish(event);
   }
 }

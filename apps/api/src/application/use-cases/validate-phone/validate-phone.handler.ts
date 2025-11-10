@@ -5,7 +5,7 @@ import { ValidatePhoneResponseDto } from '../../dtos/validate-phone-response.dto
 import { INumberVerificationService } from '../../../domain/services/number-verification.service.interface';
 import { CLIENT_REPOSITORY, NUMBER_VERIFICATION_SERVICE } from '../../../domain/config/tokens';
 import { IClientRepository } from '../../../domain/repositories/client.repository';
-import { ValidatePhoneEvent } from '../../events/validate-phone.event';
+import { ValidatedPhoneEvent } from '../../events/validated-phone.event';
 
 @CommandHandler(ValidatePhoneCommand)
 export class ValidatePhoneHandler implements ICommandHandler<ValidatePhoneCommand, ValidatePhoneResponseDto> {
@@ -55,7 +55,7 @@ export class ValidatePhoneHandler implements ICommandHandler<ValidatePhoneComman
   }
 
   private async publishEvent(clientId: string, phoneNumber: string) {
-    const event = new ValidatePhoneEvent(clientId, phoneNumber);
+    const event = new ValidatedPhoneEvent(clientId, phoneNumber);
     this.eventBus.publish(event);
   }
 }

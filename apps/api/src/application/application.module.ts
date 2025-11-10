@@ -4,7 +4,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { RegisterClientHandler } from './use-cases/register-client/register-client.handler';
 import { ValidatePhoneHandler } from './use-cases/validate-phone/validate-phone.handler';
 import { ValidateOtpHandler } from './use-cases/validate-otp/validate-otp.handler';
-import { ValidateSimSwapHandler } from './use-cases/validate-sim-swap/validate-sim-swap.handler';
+import { ValidateDeviceSwapHandler } from './use-cases/validate-device-swap/validate-device-swap.handler';
 
 @Module({
   imports: [CqrsModule],
@@ -13,7 +13,7 @@ import { ValidateSimSwapHandler } from './use-cases/validate-sim-swap/validate-s
     ValidatePhoneHandler,
     ValidateOtpHandler,
     // Events
-    ValidateSimSwapHandler,
+    ValidateDeviceSwapHandler,
   ],
 })
 export class ApplicationModule {}
