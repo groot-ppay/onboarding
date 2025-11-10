@@ -7,6 +7,6 @@ export class ValidatePhoneResponseDto {
   @ApiProperty({ example: 'VALIDATED', enum: ['PENDING', 'VALIDATED'] })
   state!: 'PENDING' | 'VALIDATED';
 
-  @ApiProperty({ example: 12345, required: false })
+  @ApiProperty({ example: 123456, required: false })
   code?: number;
 }

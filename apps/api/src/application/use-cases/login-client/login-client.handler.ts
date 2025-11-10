@@ -75,7 +75,7 @@ export class LoginClientHandler implements ICommandHandler<LoginClientCommand, L
     }
 
     // TODO: Save OTP code
-    const code = Math.floor(10000 + Math.random() * 90000);
+    const code = Math.floor(100000 + Math.random() * 900000);
     this.logger.log(`Enviando código OTP para cliente: ${client.id.value}, teléfono: ${client.phoneNumber}. ${code}`);
     
     return { 

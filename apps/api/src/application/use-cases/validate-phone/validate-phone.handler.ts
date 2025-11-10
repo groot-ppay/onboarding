@@ -51,7 +51,7 @@ export class ValidatePhoneHandler implements ICommandHandler<ValidatePhoneComman
 
     // TODO: Save OTP code
     this.logger.log(`Enviando código por SMS para clientId: ${clientId}, teléfono: ${phoneNumber}`);
-    return { strategy: 'OTP', state: 'PENDING', code: Math.floor(10000 + Math.random() * 90000) };
+    return { strategy: 'OTP', state: 'PENDING', code: Math.floor(100000 + Math.random() * 900000) };
   }
 
   private async publishEvent(clientId: string, phoneNumber: string) {

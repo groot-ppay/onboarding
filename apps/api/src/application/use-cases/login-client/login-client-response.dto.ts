@@ -10,6 +10,6 @@ export class LoginClientResponseDto {
   @ApiProperty({ example: 'VALIDATED', enum: ['VALIDATED', 'PENDING'] })
   state!: 'VALIDATED' | 'PENDING';
 
-  @ApiProperty({ example: 12345, required: false })
+  @ApiProperty({ example: 123456, required: false })
   code?: number;
 }
