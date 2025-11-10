@@ -1,4 +1,5 @@
-import { Home, LogOut, Settings } from 'lucide-react';
+import { LogOut, Settings } from 'lucide-react';
+import logo from '../../../assets/personal_pay_logo.svg';
 
 export interface HomeScreenProps {
   formData: {
@@ -24,21 +25,9 @@ export default function HomeScreen({ formData, onReset }: HomeScreenProps) {
       }}>
         <div style={{ width: '100%', maxWidth: '42rem' }}>
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <div style={{
-              width: '4rem',
-              height: '4rem',
-              backgroundColor: 'white',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 1.5rem',
-              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
-            }}>
-              <Home size={32} color="var(--primary)" />
-            </div>
+            <img src={logo} alt="Personal Pay" style={{ width: '200px', margin: '0 auto 1.5rem', display: 'block' }} />
             <h1 style={{ fontSize: '2.25rem', fontWeight: 'bold', color: 'white', marginBottom: '0.5rem' }}>
-              Bienvenido a Personal Pay
+              Bienvenido
             </h1>
             <p style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
               Tu cuenta ha sido creada exitosamente

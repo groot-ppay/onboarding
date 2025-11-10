@@ -19,12 +19,12 @@ const KYCFlow = () => {
     formData,
     showError,
     isLoading,
+    buttonLabel,
     handleNext,
     handlePrevious,
     handleRetry,
     handleReset,
     updateFormData,
-    handlePhoneValidation,
     canProceed,
   } = useKYCFlow();
 
@@ -56,7 +56,7 @@ const KYCFlow = () => {
           phone={formData.phone} 
           clientId={formData.clientId} 
           onPhoneChange={(value) => updateFormData('phone', value)}
-          onValidationComplete={handlePhoneValidation}
+          onValidationComplete={() => {}}
         />
       ),
       5: <OtpVerification phone={formData.phone} otp={formData.otp} otpCode={formData.otpCode} onOtpChange={(value) => updateFormData('otp', value)} />,
@@ -75,10 +75,10 @@ const KYCFlow = () => {
         <FormLayout
           currentStep={currentStep}
           onNext={handleNext}
-          onPrevious={handlePrevious}
+          onReset={handleReset}
           canProceed={canProceed()}
           isLoading={isLoading}
-          nextLabel={currentStep === 7 ? 'Ir a Home' : 'Siguiente'}
+          nextLabel={buttonLabel}
         >
           {renderContent()}
         </FormLayout>

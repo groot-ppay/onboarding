@@ -1,4 +1,5 @@
-import { Home as HomeIcon, LogOut, Settings } from 'lucide-react';
+import { LogOut, Settings } from 'lucide-react';
+import logo from '../../assets/personal_pay_logo.svg';
 import styles from './home.module.css';
 
 export default function Home() {
@@ -12,10 +13,8 @@ export default function Home() {
       <div className={styles.wrapper}>
         <div className={styles.content}>
           <div className={styles.header}>
-            <div className={styles.iconWrapper}>
-              <HomeIcon size={32} color="var(--primary)" />
-            </div>
-            <h1 className={styles.title}>Bienvenido a Personal Pay</h1>
+            <img src={logo} alt="Personal Pay" style={{ width: '180px', marginBottom: '1rem' }} />
+            <h1 className={styles.title}>Bienvenido</h1>
             <p className={styles.subtitle}>Tu cuenta está activa</p>
           </div>
 

@@ -30,20 +30,28 @@ function AppContent() {
   const handleLogin = (email: string, loginResponse: LoginResponse) => {
     setLoginEmail(email);
     setClientData(loginResponse);
+    setIsLoading(true);
     
-    if (loginResponse.state === 'VALIDATED' && loginResponse.strategy === 'SILENT_VALIDATION') {
-      navigate('/verify-email');
-      setCurrentPath('/verify-email');
-    } else if (loginResponse.state === 'PENDING' && loginResponse.strategy === 'OTP') {
-      setLoginOtpCode(loginResponse.code.toString());
-      navigate('/login-otp');
-      setCurrentPath('/login-otp');
-    }
+    setTimeout(() => {
+      if (loginResponse.state === 'VALIDATED' && loginResponse.strategy === 'SILENT_VALIDATION') {
+        navigate('/verify-email');
+        setCurrentPath('/verify-email');
+      } else if (loginResponse.state === 'PENDING' && loginResponse.strategy === 'OTP') {
+        setLoginOtpCode(loginResponse.code.toString());
+        navigate('/login-otp');
+        setCurrentPath('/login-otp');
+      }
+      setIsLoading(false);
+    }, 800);
   };
 
   const handleLoginOtpSuccess = () => {
-    navigate('/verify-email');
-    setCurrentPath('/verify-email');
+    setIsLoading(true);
+    setTimeout(() => {
+      navigate('/verify-email');
+      setCurrentPath('/verify-email');
+      setIsLoading(false);
+    }, 800);
   };
 
   if (isLoading) {
@@ -63,7 +71,7 @@ function AppContent() {
   const routes = [
     {
       path: '/login',
-      component: <Login onLogin={handleLogin} />
+      component: <Login onLogin={handleLogin} onLoadingChange={setIsLoading} />
     },
     {
       path: '/login-otp',
@@ -90,7 +98,7 @@ function AppContent() {
     },
     {
       path: '/',
-      component: <Login onLogin={handleLogin} />
+      component: <Login onLogin={handleLogin} onLoadingChange={setIsLoading} />
     }
   ];
 

@@ -8,7 +8,15 @@ export interface LoaderProps {
 
 export const Loader: FC<LoaderProps> = ({ description }) => (
   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2.5rem', width: '100%' }}>
-    <div style={{ width: '6rem', height: '6rem' }}>
+    <div style={{ 
+      width: '6rem', 
+      height: '6rem', 
+      borderRadius: '50%', 
+      overflow: 'hidden',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}>
       <Lottie animationData={loaderAnimation} loop autoplay style={{ width: '100%', height: '100%' }} />
     </div>
     {description && (

@@ -10,38 +10,24 @@ export interface PhoneVerificationProps {
   onValidationComplete: (response: PhoneValidationResponse) => void;
 }
 
+export const validatePhone = async (clientId: string, phoneNumber: string): Promise<PhoneValidationResponse | null> => {
+  try {
+    const response = await fetch('http://localhost:3000/client/phone-validation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clientId, phoneNumber }),
+    });
+
+    const data: PhoneValidationResponse = await response.json();
+    console.log('Phone validation response:', data);
+    return response.ok ? data : null;
+  } catch (error) {
+    console.error('Error validating phone:', error);
+    return null;
+  }
+};
+
 export default function PhoneVerification({ phone, clientId, onPhoneChange, onValidationComplete }: PhoneVerificationProps) {
-  const { clientData } = useClient();
-  const [isValidating, setIsValidating] = useState(false);
-  
-  console.log('PhoneVerification - clientData:', clientData, 'phone:', phone);
-
-  const handleValidatePhone = async () => {
-    if (!phone || !clientData?.clientId) return;
-
-    setIsValidating(true);
-    try {
-      const response = await fetch('http://localhost:3000/client/phone-validation', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          clientId: clientData.clientId,
-          phoneNumber: phone,
-        }),
-      });
-
-      const data: PhoneValidationResponse = await response.json();
-      console.log('Phone validation response:', data);
-      
-      onValidationComplete(data);
-    } catch (error) {
-      console.error('Error validating phone:', error);
-    } finally {
-      setIsValidating(false);
-    }
-  };
 
   return (
     <div>
@@ -60,26 +46,7 @@ export default function PhoneVerification({ phone, clientId, onPhoneChange, onVa
           />
         </div>
 
-        <button
-          type="button"
-          onClick={handleValidatePhone}
-          disabled={!phone || isValidating}
-          className={styles.validateButton}
-          style={{
-            marginTop: '1rem',
-            padding: '0.75rem 1.5rem',
-            backgroundColor: 'var(--primary)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '0.5rem',
-            cursor: phone && !isValidating ? 'pointer' : 'not-allowed',
-            opacity: phone && !isValidating ? 1 : 0.5,
-          }}
-        >
-          {isValidating ? 'Validando...' : 'Validar Teléfono'}
-        </button>
-
-        <div className={styles.grayBox}>
+        <div className={styles.grayBox} style={{ marginTop: '1rem' }}>
           <p className={styles.grayText}>
             Conectando a las APIs de verificación para validar tu teléfono...
           </p>

@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
-import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { ChevronRight, Home } from 'lucide-react';
 import styles from './form-layout.module.css';
 
 interface FormLayoutProps {
   currentStep: number;
   children: ReactNode;
   onNext: () => void;
-  onPrevious: () => void;
+  onReset: () => void;
   canProceed: boolean;
   isLoading: boolean;
   nextLabel?: string;
@@ -16,7 +16,7 @@ export const FormLayout = ({
   currentStep,
   children,
   onNext,
-  onPrevious,
+  onReset,
   canProceed,
   isLoading,
   nextLabel = 'Siguiente'
@@ -31,12 +31,11 @@ export const FormLayout = ({
 
       <div className={styles.navigation}>
         <button
-          onClick={onPrevious}
-          disabled={currentStep === 1}
+          onClick={onReset}
           className={`${styles.button} ${styles.buttonBack}`}
         >
-          <ChevronLeft size={20} />
-          Atrás
+          <Home size={20} />
+          Ir al Inicio
         </button>
 
         <button

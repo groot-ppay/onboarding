@@ -9,10 +9,25 @@ export interface OtpVerificationProps {
   onOtpChange: (value: string) => void;
 }
 
+export const validateOtp = async (clientId: string, phoneNumber: string, otp: string): Promise<boolean> => {
+  try {
+    const response = await fetch('http://localhost:3000/client/otp-validation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clientId, phoneNumber, otp }),
+    });
+
+    const data = await response.json();
+    console.log('OTP validation response:', data);
+    return response.ok;
+  } catch (error) {
+    console.error('Error validating OTP:', error);
+    return false;
+  }
+};
+
 export default function OtpVerification({ phone, otp, otpCode, onOtpChange }: OtpVerificationProps) {
-  const { clientData } = useClient();
   const [otpDigits, setOtpDigits] = useState(['', '', '', '', '', '']);
-  const [isValidating, setIsValidating] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
@@ -67,30 +82,6 @@ export default function OtpVerification({ phone, otp, otpCode, onOtpChange }: Ot
     inputRefs.current[Math.min(pastedData.length, 5)]?.focus();
   };
 
-  const handleValidateOtp = async () => {
-    if (otp.length !== 6 || !clientData?.clientId) return;
-
-    setIsValidating(true);
-    try {
-      const response = await fetch('http://localhost:3000/client/otp-validation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          clientId: clientData.clientId,
-          phoneNumber: phone,
-          otp: otp,
-        }),
-      });
-
-      const data = await response.json();
-      console.log('OTP validation response:', data);
-    } catch (error) {
-      console.error('Error validating OTP:', error);
-    } finally {
-      setIsValidating(false);
-    }
-  };
-
   return (
     <div>
       <h2 className={styles.title}>Verificación OTP</h2>
@@ -114,26 +105,7 @@ export default function OtpVerification({ phone, otp, otpCode, onOtpChange }: Ot
           ))}
         </div>
 
-        <button
-          type="button"
-          onClick={handleValidateOtp}
-          disabled={otp.length !== 6 || isValidating}
-          style={{
-            marginTop: '1.5rem',
-            padding: '0.75rem 1.5rem',
-            backgroundColor: 'var(--primary)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '0.5rem',
-            cursor: otp.length === 6 && !isValidating ? 'pointer' : 'not-allowed',
-            opacity: otp.length === 6 && !isValidating ? 1 : 0.5,
-            width: '100%',
-          }}
-        >
-          {isValidating ? 'Validando...' : 'Validar OTP'}
-        </button>
-
-        <div className={styles.resendBox}>
+        <div className={styles.resendBox} style={{ marginTop: '1.5rem' }}>
           <p className={styles.resendText}>¿No recibiste el código?</p>
           <button type="button" className={styles.resendButton}>
             Reenviar código

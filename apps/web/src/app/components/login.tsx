@@ -1,21 +1,22 @@
 import { useState } from 'react';
-import { LogIn } from 'lucide-react';
 import { LoginResponse } from '../types/login.types';
+import logo from '../../assets/personal_pay_logo.svg';
 import styles from './login.module.css';
 
 interface LoginProps {
-  onLogin: (email: string, loginResponse: LoginResponse) => void;
+  readonly onLogin: (email: string, loginResponse: LoginResponse) => void;
+  readonly onLoadingChange: (loading: boolean) => void;
 }
 
-export default function Login({ onLogin }: LoginProps) {
+export default function Login({ onLogin, onLoadingChange }: LoginProps) {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-
-    setIsLoading(true);
+    
+    onLoadingChange(true);
     try {
       const response = await fetch('http://localhost:3000/client/login', {
         method: 'POST',
@@ -31,8 +32,7 @@ export default function Login({ onLogin }: LoginProps) {
       }
     } catch (error) {
       console.error('Error logging in:', error);
-    } finally {
-      setIsLoading(false);
+      onLoadingChange(false);
     }
   };
 
@@ -43,17 +43,15 @@ export default function Login({ onLogin }: LoginProps) {
       <div className={styles.wrapper}>
         <div className={styles.card}>
           <div className={styles.header}>
-            <div className={styles.iconWrapper}>
-              <LogIn size={32} color="white" />
-            </div>
-            <h1 className={styles.title}>Personal Pay</h1>
+            <img src={logo} alt="Personal Pay" style={{ width: '200px', marginBottom: '1rem', filter: 'brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(246deg) brightness(104%) contrast(97%)' }} />
             <p className={styles.subtitle}>Inicia sesión en tu cuenta</p>
           </div>
 
           <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.formGroup}>
-              <label className={styles.label}>Email</label>
+              <label htmlFor="email" className={styles.label}>Email</label>
               <input
+                id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -74,8 +72,8 @@ export default function Login({ onLogin }: LoginProps) {
                 href="/register"
                 onClick={(e) => {
                   e.preventDefault();
-                  window.history.pushState({}, '', '/register');
-                  window.dispatchEvent(new PopStateEvent('popstate'));
+                  globalThis.history.pushState({}, '', '/register');
+                  globalThis.dispatchEvent(new PopStateEvent('popstate'));
                 }}
                 className={styles.link}
               >
