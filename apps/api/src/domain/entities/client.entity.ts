@@ -9,14 +9,14 @@ export type ClientEntityProps = {
   birthDate?: string;
   phoneNumber?: string;
   legal?: boolean;
-  status: 'CREATED' | 'COMPLETED';
+  status: 'CREATED' | 'COMPLETED' | 'BLOCKED';
 };
 
 export class ClientEntity {
   constructor(
     public readonly id: Uuid,
     public email: string,
-    public status: 'CREATED' | 'COMPLETED',
+    public status: 'CREATED' | 'COMPLETED' | 'BLOCKED',
     public documentNumber?: string,
     public gender?: string,
     public names?: string,

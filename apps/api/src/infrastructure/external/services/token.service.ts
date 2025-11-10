@@ -1,8 +1,9 @@
-import { Injectable, HttpException } from '@nestjs/common';
+import { Injectable, HttpException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class TokenService {
+  private readonly logger = new Logger(TokenService.name);
   private readonly authUrl: string;
   private readonly clientId: string;
   private readonly clientSecret: string;
@@ -17,8 +18,11 @@ export class TokenService {
   async getAccessToken(scope: string): Promise<string> {
     const cached = this.tokenCache.get(scope);
     if (cached && Date.now() < cached.expiry) {
+      this.logger.log(`[getAccessToken] Using cached token for scope: ${scope}`);
       return cached.token;
     }
+
+    this.logger.log(`[getAccessToken] Request: ${this.authUrl} - Scope: ${scope}`);
 
     const credentials = Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64');
     const body = new URLSearchParams({
@@ -36,6 +40,7 @@ export class TokenService {
     });
 
     if (!response.ok) {
+      this.logger.error(`[getAccessToken] Error: ${response.status}`);
       throw new HttpException('Failed to obtain access token', response.status);
     }
 
@@ -43,6 +48,7 @@ export class TokenService {
     const expiry = Date.now() + (data.expires_in - 60) * 1000;
     
     this.tokenCache.set(scope, { token: data.access_token, expiry });
+    this.logger.log(`[getAccessToken] Token obtained successfully for scope: ${scope}`);
     return data.access_token;
   }
 }

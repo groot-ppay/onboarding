@@ -1,17 +1,17 @@
 import { Injectable, HttpException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
-  ISimSwapService,
+  IDeviceSwapService,
   RetrieveDateRequest,
   RetrieveDateResponse,
-  CheckSimSwapRequest,
-  CheckSimSwapResponse,
-} from '../../../domain/services/sim-swap.service.interface';
+  CheckDeviceSwapRequest,
+  CheckDeviceSwapResponse,
+} from '../../../domain/services/device-swap.service.interface';
 import { TokenService } from './token.service';
 
 @Injectable()
-export class SimSwapService implements ISimSwapService {
-  private readonly logger = new Logger(SimSwapService.name);
+export class DeviceSwapService implements IDeviceSwapService {
+  private readonly logger = new Logger(DeviceSwapService.name);
   private readonly apiUrl: string;
   private readonly scope: string;
 
@@ -20,11 +20,11 @@ export class SimSwapService implements ISimSwapService {
     private readonly tokenService: TokenService
   ) {
     this.apiUrl = this.configService.get<string>('API_URL', '');
-    this.scope = this.configService.get<string>('SIM_SWAP_SCOPE', '');
+    this.scope = this.configService.get<string>('DEVICE_SWAP_SCOPE', '');
   }
 
-  async retrieveDate( request: RetrieveDateRequest): Promise<RetrieveDateResponse> {
-    const url = `${this.apiUrl}/sim-swap/v0/retrieve-date`;
+  async retrieveDate(request: RetrieveDateRequest): Promise<RetrieveDateResponse> {
+    const url = `${this.apiUrl}/device-swap/v0.2/retrieve-date`;
     this.logger.log(`[retrieveDate] Request: ${url} - Body: ${JSON.stringify(request)}`);
 
     const token = await this.tokenService.getAccessToken(this.scope);
@@ -43,7 +43,7 @@ export class SimSwapService implements ISimSwapService {
       const error = await response.json().catch(() => ({}));
       this.logger.error(`[retrieveDate] Error: ${response.status} - ${JSON.stringify(error)}`);
       throw new HttpException(
-        error.message || 'Failed to retrieve SIM swap date',
+        error.message || 'Failed to retrieve device swap date',
         response.status
       );
     }
@@ -53,9 +53,9 @@ export class SimSwapService implements ISimSwapService {
     return result;
   }
 
-  async checkSimSwap(request: CheckSimSwapRequest): Promise<CheckSimSwapResponse> {
-    const url = `${this.apiUrl}/sim-swap/v0/check`;
-    this.logger.log(`[checkSimSwap] Request: ${url} - Body: ${JSON.stringify(request)}`);
+  async checkDeviceSwap(request: CheckDeviceSwapRequest): Promise<CheckDeviceSwapResponse> {
+    const url = `${this.apiUrl}/device-swap/v0.2/check`;
+    this.logger.log(`[checkDeviceSwap] Request: ${url} - Body: ${JSON.stringify(request)}`);
 
     const token = await this.tokenService.getAccessToken(this.scope);
     const headers: Record<string, string> = {
@@ -71,15 +71,15 @@ export class SimSwapService implements ISimSwapService {
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
-      this.logger.error(`[checkSimSwap] Error: ${response.status} - ${JSON.stringify(error)}`);
+      this.logger.error(`[checkDeviceSwap] Error: ${response.status} - ${JSON.stringify(error)}`);
       throw new HttpException(
-        error.message || 'Failed to check SIM swap',
+        error.message || 'Failed to check device swap',
         response.status
       );
     }
 
     const result = await response.json();
-    this.logger.log(`[checkSimSwap] Response: ${JSON.stringify(result)}`);
+    this.logger.log(`[checkDeviceSwap] Response: ${JSON.stringify(result)}`);
     return result;
   }
 }

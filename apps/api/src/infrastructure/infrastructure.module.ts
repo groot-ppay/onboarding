@@ -5,7 +5,8 @@ import { envConfig } from './config/env.config';
 import { 
   CLIENT_REPOSITORY,
   NUMBER_VERIFICATION_SERVICE, 
-  SIM_SWAP_SERVICE 
+  SIM_SWAP_SERVICE,
+  DEVICE_SWAP_SERVICE
 } from '../domain/config/tokens';
 import {
   Client,
@@ -20,6 +21,7 @@ import {
 import { NumberVerificationService } from './external/services/number-verification.service';
 import { TokenService } from './external/services/token.service';
 import { SimSwapService } from './external/services/sim-swap.service';
+import { DeviceSwapService } from './external/services/device-swap.service';
 import { ClientRepository } from './persistence/repositories/client.repository';
 
 @Global()
@@ -55,6 +57,10 @@ import { ClientRepository } from './persistence/repositories/client.repository';
       provide: SIM_SWAP_SERVICE,
       useClass: SimSwapService,
     },
+    {
+      provide: DEVICE_SWAP_SERVICE,
+      useClass: DeviceSwapService,
+    },
     TokenService,
     // Repositories
     {
@@ -68,6 +74,7 @@ import { ClientRepository } from './persistence/repositories/client.repository';
     CLIENT_REPOSITORY,
     NUMBER_VERIFICATION_SERVICE,
     SIM_SWAP_SERVICE,
+    DEVICE_SWAP_SERVICE,
   ],
 })
 export class InfrastructureModule { }
